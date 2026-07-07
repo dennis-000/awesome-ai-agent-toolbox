@@ -45,11 +45,13 @@ Here is how the vault is organized:
 │           ├── scroll-cinematic/
 │           └── trading/
 │
-├── n8n/                                   # [Upcoming] n8n workflows and nodes
-│   └── README.md
+├── n8n/                                   # 100+ Production-ready n8n workflow templates
+│   ├── workflows/                         # JSON workflow files for direct copy-paste
+│   └── zips/                              # Zip file containing all workflows
 │
-├── voice-ai/                              # [Upcoming] Voice AI prompts, settings, and configs
-│   └── README.md
+├── voice-ai/                              # Conversational Voice AI agent templates
+│   ├── agents/                            # Voice AI node and hook configurations (JSON)
+│   └── zips/                              # Zip file containing all voice templates
 │
 └── vibe-coding/                           # [Upcoming] Vibe coding workflows, guides, and tools
     └── README.md
@@ -88,12 +90,34 @@ Teach Claude how to write exactly like you do!
 
 ---
 
+## 🔄 n8n Automation Workflows
+
+We have added a catalog of **100+ production-ready n8n workflows** for automating common tasks.
+
+* **Email & Inbox Routers:** Gmail and Outlook auto-labeling, review summaries, and auto-drafting.
+* **Chatbots & Voice AI:** Twilio/Telegram/WhatsApp chatbots with contextual memory.
+* **Content Autopilot:** WordPress automated publishers powered by DeepSeek R1 and Claude.
+* **Developer Utilities:** GitLab automatic code review, autonomous web crawler, and API schema extraction.
+
+To browse these workflows and learn how to import them directly to your canvas, go to the [n8n Directory](n8n/README.md).
+
+---
+
+## 🎙️ Voice AI Prompts & Configurations
+
+We have added conversational Voice AI integration templates for popular APIs and telephony systems.
+
+* **API Integrations:** Out-of-the-box configurations for Telnyx and ElevenLabs conversational agents.
+* **Agent Blueprints:** Pre-designed system prompts and flows for health check-in bots and real estate lead qualification assistants.
+
+To browse these templates and learn how to use them on your canvas, visit the [Voice AI Directory](voice-ai/README.md).
+
+---
+
 ## 🔄 Upcoming Integrations
 
 As the AI ecosystem expands, this repository will serve as a living library. Planned additions include:
 
-* **n8n Workflows:** Automation templates connecting email, CRMs, social media autopilot, and database backends.
-* **Voice AI Prompts & Configs:** Prompt templates and setup guides for voice assistants (e.g., Retell, Vapi, LiveKit).
 * **Vibe Coding Workflows:** Best practices, configs, and workflow diagrams for high-speed development using AI coding assistants.
 
 ---

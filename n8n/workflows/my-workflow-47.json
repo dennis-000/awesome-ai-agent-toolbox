@@ -1,0 +1,169 @@
+{
+  "name": "My workflow 47",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-3-pro-image-preview",
+          "mode": "id"
+        },
+        "prompt": "={{ $json.chatInput }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -144
+      ],
+      "id": "3b6445e1-6835-421b-952d-5bb7b3627a91",
+      "name": "Generate an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "4OXmIPTiclMMRODV",
+          "name": "Google Gemini(PaLM)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -224,
+        -144
+      ],
+      "id": "fc9663d8-3f71-4aa3-b780-b5b37c626b11",
+      "name": "When chat message received",
+      "webhookId": "f2548319-6860-4d4f-8372-73baee090af3"
+    },
+    {
+      "parameters": {
+        "formTitle": "Edit Image",
+        "formDescription": "Edit Image with NanoBanana",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Edit Description"
+            },
+            {
+              "fieldLabel": "Image",
+              "fieldType": "file"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -224,
+        176
+      ],
+      "id": "03629df9-52c9-4d7d-9e33-b19bace585f4",
+      "name": "On form submission",
+      "webhookId": "b50a941b-f98c-41cd-9609-6385e121e583"
+    },
+    {
+      "parameters": {
+        "content": "# Create New Image",
+        "height": 272,
+        "width": 528,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -304,
+        -256
+      ],
+      "typeVersion": 1,
+      "id": "4b2425f4-6077-4a13-9a4e-ff00e6b0435e",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# Edit an Image",
+        "height": 272,
+        "width": 528,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -304,
+        64
+      ],
+      "typeVersion": 1,
+      "id": "6b9efda6-6c11-4e83-a279-98fda564f94a",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "edit",
+        "prompt": "={{ $json['Edit Description'] }}",
+        "images": {
+          "values": [
+            {
+              "binaryPropertyName": "Image"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        0,
+        176
+      ],
+      "id": "f263c9e3-0e20-49a1-a858-9c0b9e1e17b9",
+      "name": "Edit an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "4OXmIPTiclMMRODV",
+          "name": "Google Gemini(PaLM)"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Generate an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c7878548-94b5-40e1-8cbd-9fdd0b0c3977",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5f99b345c3a4501a22438ba5962ff6685e5e97ee4bd0a17cc04a19ed072b5c2a"
+  },
+  "id": "ZuT4yDWyTn1ElHkH",
+  "tags": []
+}

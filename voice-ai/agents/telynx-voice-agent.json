@@ -1,0 +1,360 @@
+{
+  "name": "Telynx Voice Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "# Call Lead on form submission\n",
+        "height": 400,
+        "width": 548,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0fd34de6-4f9e-4d19-a3c1-ac4dc0adbffd",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "formTitle": "Customer Inquiry ",
+        "formDescription": "Please provide your contact details and the AI service you're looking for. ",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name ",
+              "placeholder": "John Doe ",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email ",
+              "fieldType": "email",
+              "placeholder": "JohnDoe@gmail.com ",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Phone Number ",
+              "fieldType": "number",
+              "placeholder": "+15102253396 ",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Budget ",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "$2,000 to $5,000 "
+                  },
+                  {
+                    "option": "$5,000 to $10,000 "
+                  },
+                  {
+                    "option": "$10,000 to $20,000 "
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Service ",
+              "fieldType": "textarea",
+              "placeholder": "Please describe the service that you're looking for to implement in your business in as much detail as possible. ",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        112,
+        160
+      ],
+      "id": "046f736d-716b-4415-bd6b-2fad878c8f55",
+      "name": "On form submission",
+      "webhookId": "ca81210e-3ce0-45ef-976e-d7455a87e427"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telnyx.com/v2/texml/calls/2791924442500958174",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_TELNYX_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\t\"From\": \"+15105611196\",\n\t\"To\": \"+{{ $json['Phone Number '] }}\",\n\t\"AIAssistantDynamicVariables\": {\n\t\t\"name\": \"{{ $json['Name '] }}\",\n\t\t\"phone_number\": \"{{ $json['Phone Number '] }}\",\n\t\t\"service\": \"{{ $json['Service '] }}\",\n\t\t\"service\": \"{{ $json['Service '] }}\",\n\t\t\"budget\": \"{{ $json['Budget '] }}\",\n        \"now\": \"{{$now}}\"\n\t  }\n}\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        320,
+        160
+      ],
+      "id": "32dc044b-52a9-4ef6-b680-fa3e84025563",
+      "name": "Telynx"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "test",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        784,
+        32
+      ],
+      "id": "cadc12e0-83e6-4952-9c83-f2a5e3b2d9f2",
+      "name": "Webhook",
+      "webhookId": "85fff1c7-3aa5-41ce-8e86-035113ada4aa"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"{{ JSON.stringify($json.output).replace(/(^\\\"|\\\"$)/g, '') }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1328,
+        32
+      ],
+      "id": "cb271ad5-602a-47b9-97ff-48a9d86140f7",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Name: {{ $json.body.name }}\nPhone: {{ $json.body.phone }}\nEmail: {{ $json.body.email }}\nDate: {{ $json.body.date }}\nTime: {{ $json.body.time }}\n\n{{ $json.query.request }}",
+        "options": {
+          "systemMessage": "=You are a helpful assistant who responds to user's request in a fun, friendly but professional way. Today's date is {{ $now }}.\n\nGuidelines:\n\nBooking:\n- If an appointment is being requested, first check the Get_Events tool to see if that requested meeting time is available and if it is available then use the Book_Meeting tool to create the appointment and send the confirmation, if the time requested is not available, provide all the available times as a response for the user to select a new time. \n\nResponse Structure:\n- Keep responses concise, short, and relevant to the user’s question.  Do not share any personal information, the ID of the meeting, or any sensitive data. "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        992,
+        32
+      ],
+      "id": "64ed3db5-2fa4-4e29-bfea-4e638cb1491e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "zubair.trabzada@gmail.com",
+          "mode": "list",
+          "cachedResultName": "zubair.trabzada@gmail.com"
+        },
+        "returnAll": true,
+        "options": {
+          "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', `one day before the date the user requested`, 'string') }}",
+          "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', `one day after the date the user requested`, 'string') }}"
+        }
+      },
+      "id": "a413bb4d-909f-4eeb-8d11-a670c08f0d4b",
+      "name": "Get_Events",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        1056,
+        288
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ooDdAehC422QioCi",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "zubair.trabzada@gmail.com",
+          "mode": "list",
+          "cachedResultName": "zubair.trabzada@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees0_Attendees', `email of the attendee`, 'string') }}"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1200,
+        288
+      ],
+      "id": "a55299be-1052-4a62-96d4-957b4f2613e3",
+      "name": "Book_Meeting",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ooDdAehC422QioCi",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        912,
+        304
+      ],
+      "id": "463deead-e1e8-4c74-bc5b-f4162ac606e1",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "zE5O89L0JjnRwfPU",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Check availability and book appointments. ",
+        "height": 560,
+        "width": 852,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        688,
+        -112
+      ],
+      "id": "3cf7d73f-c531-433c-bb10-168f518828f7",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "Name ": "Zubair Trabzada",
+          "Email ": "zubair.trabzada@gmail.com",
+          "Phone Number ": 15107096913,
+          "Budget ": "$5,000 to $10,000 ",
+          "Service ": "I own a kite surfing business in San Francisco and I'm looking to implement AI to automate the customer interactions. ",
+          "submittedAt": "2025-05-09T19:09:23.314-07:00",
+          "formMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Telynx",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telynx": {
+      "main": [
+        []
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get_Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book_Meeting": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bfdd9cb4-4a1f-4b5e-a9d0-28c29a5196c1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5f99b345c3a4501a22438ba5962ff6685e5e97ee4bd0a17cc04a19ed072b5c2a"
+  },
+  "id": "LUYvbx1UH70h5hzR",
+  "tags": []
+}

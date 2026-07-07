@@ -1,0 +1,358 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -440,
+        420
+      ],
+      "id": "c47c0692-b560-4ff0-b3ce-8154849d6aa0",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "BsExDzrcd0FWxbRS",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "inbound",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -860,
+        220
+      ],
+      "id": "1fca7db9-871c-4e14-9e8b-71298ee36b3d",
+      "name": "Webhook",
+      "webhookId": "dbbff561-6f5c-4a17-a02e-ebdfa0068887"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "email": "zubair.trabzada@gmail.com",
+        "additionalFields": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "757c28f5-0cca-4d0e-aee2-69a00718d862",
+      "name": "Create or update a contact"
+    },
+    {
+      "parameters": {
+        "sendTo": "asdfa",
+        "subject": "asdfas",
+        "message": "={{ $('AI Agent').item.json.output.call_summary }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        220
+      ],
+      "id": "ec4986b6-4ab5-4f8e-bdbc-7ed9062eaf1a",
+      "name": "Send a message",
+      "webhookId": "fdc976a3-47b3-4a9c-9d9e-94478f3ea570"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1rZmEUhd6P-57EC0o3LmZt0gwBMInRCjGvUSUd89lgnk",
+          "mode": "list",
+          "cachedResultName": "Crescent Dental",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rZmEUhd6P-57EC0o3LmZt0gwBMInRCjGvUSUd89lgnk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rZmEUhd6P-57EC0o3LmZt0gwBMInRCjGvUSUd89lgnk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "First Name": "={{ $json.output.first_name }}",
+            "Last Name": "={{ $json.output.last_name }}",
+            "Phone ": "={{ $json.output.phone }}",
+            "Email": "={{ $json.output.email }}",
+            "Insurance": "={{ $json.output.insurance }}",
+            "Call Summary ": "={{ $json.output.call_summary }}"
+          },
+          "matchingColumns": [
+            "Phone "
+          ],
+          "schema": [
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone ",
+              "displayName": "Phone ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Insurance",
+              "displayName": "Insurance",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Call Summary ",
+              "displayName": "Call Summary ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -60,
+        220
+      ],
+      "id": "7882d20c-0559-4fb3-b146-7f6c6fefaeee",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "6c210nMnC3cbxopO",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C08PK0ZENG1",
+          "mode": "list",
+          "cachedResultName": "aiw-bot-test"
+        },
+        "text": "=kkkk",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        220,
+        420
+      ],
+      "id": "97ebced0-a27a-42fe-bb98-2c8a3ffd1a7b",
+      "name": "Send a Slack",
+      "webhookId": "18d2ba01-c7db-45df-8e52-332809fd97a4"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.call.agent_name }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -400,
+        220
+      ],
+      "id": "e1425a00-e109-441c-b7d9-d05189f60cfc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -240,
+        420
+      ],
+      "id": "e1116853-a0d2-48a5-9c63-4847676be0e7",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0356a58c-1de3-4709-8847-01d662de10b5",
+              "leftValue": "={{ $json.body.event }}",
+              "rightValue": "call_analyzed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -640,
+        220
+      ],
+      "id": "bad73167-0b57-4811-ace1-60f7a75bb133",
+      "name": "If"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Create or update a contact",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "dd5cb035-44b4-465a-9c7c-dc4dd6483e53",
+  "meta": {
+    "instanceId": "7b056656c173c04ba946c411ba01e50b834cac0d84d754fa54dea147ccda9059"
+  },
+  "id": "saLd1w0qqF3k40n0",
+  "tags": []
+}

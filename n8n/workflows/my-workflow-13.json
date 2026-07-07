@@ -1,0 +1,375 @@
+{
+  "name": "My workflow 13",
+  "nodes": [
+    {
+      "parameters": {
+        "amount": 85
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2340,
+        780
+      ],
+      "id": "f5bf9265-4c5b-42d8-b672-664fe2743425",
+      "name": "Wait",
+      "webhookId": "e69b86dd-a658-42f3-8b81-f72dc9c22db0"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "o3-mini",
+          "mode": "list",
+          "cachedResultName": "O3-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=🎥 Cinematic Anime Scene Generator – Story to Visuals Format (High Gloss 3D Style)\n\n📌 Task:\nYou are an advanced AI that transforms a simple anime topic, emotion, or story idea into a high-quality cinematic anime prompt.\nThe final result should feel like a 3D, polished, glossy anime movie scene, with deep lighting, rich textures, and emotional atmosphere — similar to the visual styles seen in Your Name, Weathering With You, Suzume, or Belle.\nThe prompt should work for both image and video generation without needing any changes.\n\n📌 Prompt Format (Output):\n\nCreate one cinematic anime-style scene prompt.\n\nDescribe realistic lighting (glowing sunlight, neon lights, soft reflections, rain effects, etc.)\n\nInclude detailed textures (wet pavement, shimmering water, glowing skin tones, reflective surfaces).\n\nMention 3D depth (soft background blur, cinematic focus, dramatic clouds, rich scenery layers).\n\nMood and emotion should feel authentic to anime movie storytelling.\n\nStay under 950 characters.\n\nNo JSON — just clean text for copy-pasting.\n\n📌 User Input Example:\nHere is the anime story idea: {{ $json.chatInput }}\n\n📌 Sample Outputs:\n\nInput: A group of kids laughing together at a fall festival\nPrompt:\nThe air buzzes with laughter as a group of kids race through fields of pumpkins and golden hay bales. Their colorful scarves flutter in the autumn breeze, and one waves a bright paper lantern high above their head. Glossy apples shine in small hands as leaves swirl around their sneakers. Lanterns glow softly overhead, casting warm light over the joyful chaos, while the fading sun paints everything in a dreamy golden haze.\n\nInput: Two travelers setting off on a sunrise road trip\nPrompt:\nAt the edge of a sleepy village, two travelers load a bright red car with backpacks and maps. The morning sky blazes with soft pink and orange hues, and dew glistens on the road. One checks the map with a grin, while the other throws their jacket into the trunk. Their laughter fills the cool air, and the car’s polished surface reflects the first light of a brand-new day stretching out before them.\n\nInput: A cozy mountain cabin on the first snowfall\nPrompt:\nSnow falls in soft spirals as a cozy wooden cabin glows warmly against the frozen landscape. Two bundled figures laugh beside a tiny, lopsided snowman, their scarves whipping in the brisk wind. Footprints dot the smooth, glossy snow, and the pine trees in the background sway gently under heavy white blankets. The scene shimmers with the quiet magic of winter's first breath, every detail dusted with a soft silver light.\n\nInput: A boy running across a field with a bright kite\nPrompt:\nA boy runs across a wide meadow bursting with wildflowers, his bright kite soaring high above him. His oversized sneakers pound the soft ground as the kite’s string cuts playful curves into the sky. The sunlight gleams off the colorful fabric, and the distant hills blur into a dreamy watercolor of greens and golds. Every step feels light, free, and endless, as if the whole world opens beneath his feet.\n\nInput: A busy street market on a sunny afternoon\nPrompt:\nVendors call out brightly as crowds flow through a sun-drenched market square, stalls bursting with fruits, flowers, and colorful crafts. Children dart between tables clutching shiny treats, their laughter bouncing off stone walls. Sunlight glints off polished apples and woven baskets, while fabric banners ripple overhead. The entire market hums with life, a vibrant dance of sound, color, and shimmering summer light.\n\n\n\n\n- Output MUST be one json:\n    { \"prompt\": \"Generated text output here...\" }\n"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1400,
+        780
+      ],
+      "id": "c2587c5a-b3cc-40b1-a5c3-6fd825885977",
+      "name": "Generate Prompt",
+      "credentials": {
+        "openAiApi": {
+          "id": "J6AO3c5sDxAPYGjy",
+          "name": "OpenAI Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.dev.runwayml.com/v1/image_to_video",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"promptImage\": \"data:image/jpeg;base64,{{ $json.data[0].b64_json }}\",\n  \"model\": \"gen3a_turbo\",\n  \"promptText\": \"{{ $('Generate Prompt').item.json.message.content.prompt }}\",\n  \"duration\": 10,\n  \"ratio\": \"1280:768\",\n  \"watermark\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2180,
+        780
+      ],
+      "id": "eda035c2-eef7-4376-b9de-d1a5a477612e",
+      "name": "Generate Video",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "UuAWfSOhHRbmJ1K2",
+          "name": "Header Auth account"
+        },
+        "httpCustomAuth": {
+          "id": "0iPceZSFIsVNvfwR",
+          "name": "Runway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.dev.runwayml.com/v1/tasks/{{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Runway-Version",
+              "value": "2024-11-06"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2500,
+        780
+      ],
+      "id": "950ce31f-8066-4fdd-8dd3-6915900cac3c",
+      "name": "Get Video",
+      "credentials": {
+        "httpCustomAuth": {
+          "id": "0iPceZSFIsVNvfwR",
+          "name": "Runway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "zubair.trabzada@gmail.com",
+        "subject": " POV video complete",
+        "message": "=Here is your POV video link -  {{ $json.output[0] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3040,
+        780
+      ],
+      "id": "c5cde788-77d1-410c-b864-b55be06d001d",
+      "name": "Gmail",
+      "webhookId": "bb1ccd4c-afef-4578-8f05-0a20e66dfa2c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "27pyVn30nF881A0d",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Generate Prompt",
+        "height": 340,
+        "width": 500,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        640
+      ],
+      "id": "c810a21f-7a90-40bc-ad36-b0eec0a82011",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Create Image with GPT-40 Image API",
+        "height": 340,
+        "width": 360,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1720,
+        640
+      ],
+      "id": "445a6108-1f02-47ab-b6c9-475fca7ff831",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## Create Video with RunwayML",
+        "height": 340,
+        "width": 520,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2120,
+        640
+      ],
+      "id": "e2b6b67d-fb4a-40df-9f82-25dcac678e73",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        1220,
+        780
+      ],
+      "id": "eb970580-5ce1-4064-b852-6be69412940f",
+      "name": "When chat message received",
+      "webhookId": "0f58189a-2ad1-43b0-8f22-8e35e64a68d2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/images/generations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_OPENAI_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gpt-image-1"
+            },
+            {
+              "name": "prompt",
+              "value": "={{ $json.message.content.prompt }}"
+            },
+            {
+              "name": "size",
+              "value": "1024x1536"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        780
+      ],
+      "id": "a8568410-5c45-42f3-9ac0-1ac7f243084a",
+      "name": "Generate Image"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/LcfcDJNUP1GQjkzn1xUU",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"text\": \"{{ JSON.stringify($('Generate Prompt').item.json.message.content.prompt).replace(/(^\\\"|\\\"$)/g, '') }}\"\n}\n",
+        "options": {}
+      },
+      "id": "f7f7c65b-eb65-4a06-8f87-a4d7fa988fc9",
+      "name": "Text to Speech1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2760,
+        780
+      ],
+      "credentials": {
+        "httpCustomAuth": {
+          "id": "qlTNSvRGwjrpuT9o",
+          "name": "11labs"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Create Audio with 11Labs API\n",
+        "height": 340,
+        "width": 300,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2660,
+        640
+      ],
+      "id": "72dceb6c-9493-4e2f-8724-d15793096e3a",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Prompt": {
+      "main": [
+        [
+          {
+            "node": "Generate Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Video": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Video": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Text to Speech1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Generate Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Image": {
+      "main": [
+        [
+          {
+            "node": "Generate Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ce4ac1b7-4f47-4d9f-8e38-ff2856ba1ecf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5f99b345c3a4501a22438ba5962ff6685e5e97ee4bd0a17cc04a19ed072b5c2a"
+  },
+  "id": "8GyHTtNR6sJysgDh",
+  "tags": []
+}

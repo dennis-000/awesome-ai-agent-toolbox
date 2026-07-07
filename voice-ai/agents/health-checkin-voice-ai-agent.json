@@ -1,0 +1,349 @@
+{
+  "name": "Health Checkin Voice AI Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "summarizationMethodAndPrompts": {
+            "values": {
+              "combineMapPrompt": "=Write a concise summary of the following:\n\n\n\"{{ $json.body.call.transcript }}\"\n\n\nCONCISE SUMMARY:",
+              "prompt": "=Write a concise summary of the following:\n\n\n\"{{ $json.body.call.transcript }}\"\n\n\nCONCISE SUMMARY:"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainSummarization",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        544
+      ],
+      "id": "545a4196-ecf4-47f5-89ad-b8562efce900",
+      "name": "Summarization Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -144,
+        704
+      ],
+      "id": "cad374a5-9a89-484c-a7f0-3d505a0c62d6",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "zE5O89L0JjnRwfPU",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Update CRM with Voice AI Agent Call Summary. \n\n",
+        "height": 440,
+        "width": 840,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -512,
+        400
+      ],
+      "id": "263b50d4-9c94-4132-9c97-42b025479aa2",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# Voice AI Agent Calls Customer\n",
+        "height": 360,
+        "width": 840,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -832,
+        16
+      ],
+      "id": "57417716-0557-4443-9366-76cc0729f3a9",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.retellai.com/v2/create-phone-call",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\t\"from_number\": \"+15105183184\",\n\t\"to_number\": \"+{{ $json['Phone Number '] }}\",\n\t\"retell_llm_dynamic_variables\": {\n\t\t\"name\": \"{{ $json['Name '] }}\",\n\t\t\"phone_number\": \"{{ $json['Phone Number '] }}\",\n        \"emai\": \"{{ $json.Email }}\",\n        \"lastvisitedon\": \"{{ $json['Last Visit'] }}\",\n\t\t\"details\": \"{{ $json.Details }}\"\n\t  },\n\t\"override_agent_id\": \"agent_b797314c8a7f7f6923bf9c72ab\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -272,
+        160
+      ],
+      "id": "ecb0c1f9-33ba-4290-8f56-19cae490e4fa",
+      "name": "Retell",
+      "credentials": {
+        "httpCustomAuth": {
+          "id": "JGdUtPEnSb6dAhxT",
+          "name": "Retell AI"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        160
+      ],
+      "id": "68f7e8f6-bac4-436a-89c9-95dd6f2f0f9c",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1NZiWcc-gvDvUFZNy8wbKnMO1v1Zgbx5zWcDb7tkbqnA",
+          "mode": "list",
+          "cachedResultName": "Upsell Voice AI Agent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NZiWcc-gvDvUFZNy8wbKnMO1v1Zgbx5zWcDb7tkbqnA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NZiWcc-gvDvUFZNy8wbKnMO1v1Zgbx5zWcDb7tkbqnA/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -480,
+        160
+      ],
+      "id": "0c966c37-2ab8-46d1-91be-b3071cbbf3ef",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XNaB59lvp2qAwfit",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ef287d8e-a189-4347-8cc2-ca574a672914",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        544
+      ],
+      "id": "93bec320-0e3c-4004-b4a0-0bb8bc25a6bc",
+      "name": "Webhook",
+      "webhookId": "ef287d8e-a189-4347-8cc2-ca574a672914"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1NZiWcc-gvDvUFZNy8wbKnMO1v1Zgbx5zWcDb7tkbqnA",
+          "mode": "list",
+          "cachedResultName": "Upsell Voice AI Agent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NZiWcc-gvDvUFZNy8wbKnMO1v1Zgbx5zWcDb7tkbqnA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NZiWcc-gvDvUFZNy8wbKnMO1v1Zgbx5zWcDb7tkbqnA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name ": "={{ $('Webhook').item.json.body.call.retell_llm_dynamic_variables.name }}",
+            "Upsell Call Summary ": "={{ $json.response.text }}"
+          },
+          "matchingColumns": [
+            "Name "
+          ],
+          "schema": [
+            {
+              "id": "Name ",
+              "displayName": "Name ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone Number ",
+              "displayName": "Phone Number ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Visit",
+              "displayName": "Last Visit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Details",
+              "displayName": "Details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Upsell Call Summary ",
+              "displayName": "Upsell Call Summary ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        96,
+        544
+      ],
+      "id": "7e5bcfad-e451-4249-ad83-5b2c33691cc9",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XNaB59lvp2qAwfit",
+          "name": "Google Sheets account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Summarization Chain": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarization Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retell": {
+      "main": [
+        []
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Retell",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Summarization Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e60ada44-562f-48d4-895b-0579a1dcf475",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5f99b345c3a4501a22438ba5962ff6685e5e97ee4bd0a17cc04a19ed072b5c2a"
+  },
+  "id": "izu3RsOwJ74e4bGM",
+  "tags": []
+}

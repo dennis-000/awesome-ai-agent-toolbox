@@ -1,0 +1,256 @@
+{
+  "name": "My workflow 31",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        176,
+        32
+      ],
+      "id": "988885b4-5b4d-4030-972a-7ad9e75abc32",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "path": "pov",
+        "formTitle": "Describe the image you would like to generate",
+        "formDescription": "=Describe the Scence",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "User Input",
+              "placeholder": "You Wake Up During the Black Plague (1351)",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2c401576-b132-493e-8ea8-3ef81cff56a7",
+      "name": "n8n Form Trigger",
+      "type": "n8n-nodes-base.formTrigger",
+      "position": [
+        -720,
+        32
+      ],
+      "webhookId": "a35eb005-f795-4c85-9d00-0fe9797cb509",
+      "typeVersion": 2.1
+    },
+    {
+      "parameters": {
+        "content": "## Generate Description of the Image",
+        "height": 340,
+        "width": 500,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        -112
+      ],
+      "id": "524b5c28-4d28-430e-a3c9-034f0e565471",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=\n📌 Task:\nYou are an advanced AI specializing in transforming a short user-provided description into a hyper-realistic, cinematic first-image prompt. This single prompt is optimized for both text-to-image and text-to-video AI models such as Flux, MidJourney, Stable Diffusion, Runway Gen-3 Alpha, and Pika Labs.\n\nuser-provided description: {{ $json['User Input'] }}\n\nFINAL REMINDER:\n\n- Output MUST be less than 950 characters \n- Output MUST be one json:\n    { \"prompt\": \"Generated text output here...\" }\n"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -544,
+        32
+      ],
+      "id": "bcafe244-3ffe-4230-9829-cf6a232e8c2b",
+      "name": "Generate Prompt",
+      "credentials": {
+        "openAiApi": {
+          "id": "zE5O89L0JjnRwfPU",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Create Image with Nano Banana for FREE",
+        "height": 340,
+        "width": 584,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        -112
+      ],
+      "id": "ae69ff3d-343f-41dd-81a8-4cd7c4d45140",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"google/gemini-2.5-flash-image-preview:free\",\n  \"modalities\": [\"image\", \"text\"],\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $json.message.content.prompt }}\"\n    }\n  ]\n}\n",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -160,
+        32
+      ],
+      "id": "5cda7a94-13a3-4b14-bdc3-d9becfc3b132",
+      "name": "HTTP Request",
+      "credentials": {
+        "openRouterApi": {
+          "id": "NrrkWrl89ut7kmrh",
+          "name": "OpenRouter account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0d3e1ea2-9386-47bf-8f8a-cce7f349dbe5",
+              "name": "=data",
+              "value": "={{$json[\"choices\"][0][\"message\"][\"images\"][0][\"image_url\"][\"url\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "393caf3e-e367-4490-8ee3-28bfc83318b1",
+              "name": "=base",
+              "value": "={{$json[\"choices\"][0][\"message\"][\"images\"][0][\"image_url\"][\"url\"].split(\",\")[1]}}",
+              "type": "string"
+            },
+            {
+              "id": "f827ebfd-c7d3-48f1-8589-74965070f910",
+              "name": "mime",
+              "value": "={{$json[\"choices\"][0][\"message\"][\"images\"][0][\"image_url\"][\"url\"].match(/^data:([^;]+)/)[1]}}",
+              "type": "string"
+            },
+            {
+              "id": "7de58815-fa11-46ba-acb4-eb4563120218",
+              "name": "fileName",
+              "value": ".png",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        32
+      ],
+      "id": "41aabab7-fd28-47b9-a45b-da5dcf8bdaf2",
+      "name": "Edit Fields1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Convert to File1": {
+      "main": [
+        []
+      ]
+    },
+    "n8n Form Trigger": {
+      "main": [
+        [
+          {
+            "node": "Generate Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Prompt": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cc835469-2b51-4fe4-9207-671e90fb377b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5f99b345c3a4501a22438ba5962ff6685e5e97ee4bd0a17cc04a19ed072b5c2a"
+  },
+  "id": "mPWzoBWsPL2sTXsJ",
+  "tags": []
+}
