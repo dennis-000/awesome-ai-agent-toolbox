@@ -53,8 +53,9 @@ Here is how the vault is organized:
 │   ├── agents/                            # Voice AI node and hook configurations (JSON)
 │   └── zips/                              # Zip file containing all voice templates
 │
-└── vibe-coding/                           # [Upcoming] Vibe coding workflows, guides, and tools
-    └── README.md
+└── vibe-coding/                           # Vibe coding workflows and app templates
+    ├── workflows/                         # Vibe coding app configurations (JSON)
+    └── zips/                              # Zip file containing all vibe coding templates
 ```
 
 ---
@@ -114,11 +115,22 @@ To browse these templates and learn how to use them on your canvas, visit the [V
 
 ---
 
+## 🚀 Vibe Coding Workflows & Resources
+
+We have added structured Vibe Coding application resources and templates.
+
+* **Ad Generators:** UGC image and video prompt workflows designed to drive generative video engines (like Veo3).
+* **Conversational AI:** Modular templates to prototype speech-to-speech lead qualifiers.
+
+To browse these workflows and explore our vibe coding blueprints, visit the [Vibe Coding Directory](vibe-coding/README.md).
+
+---
+
 ## 🔄 Upcoming Integrations
 
 As the AI ecosystem expands, this repository will serve as a living library. Planned additions include:
 
-* **Vibe Coding Workflows:** Best practices, configs, and workflow diagrams for high-speed development using AI coding assistants.
+* **Agentic IDE Configs:** Custom `.cursorrules` and prompt scripts to optimize agentic coding assistants.
 
 ---
 
