@@ -11,6 +11,9 @@ You can download the full bundle directly as a zip file from [vibe-coding-bundle
 * [AI UGC Ad Generator (Antigravity)](workflows/ai-ugc-ad-app-antigravity.json) — An agentic workflow for automatically writing image and video prompts for products, structured specifically to connect with image and video generation backends (like Veo3).
 * [Voice AI Lead Qualifier Agent](workflows/lead-qualification-voice-ai-agent.json) — Flow template for setting up a conversational assistant to qualify sales leads automatically.
 
+### 📚 Prompting Guides
+* [Ultimate Prompting Guide for Video Generation Models](guides/ultimate-prompting-guide-for-video-generation-models.pdf) — Comprehensive PDF handbook containing frameworks, parameter guides, and styling tips for modern video AI generators.
+
 ---
 
 ## 🚀 How to Import into your Canvas

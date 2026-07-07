@@ -55,6 +55,7 @@ Here is how the vault is organized:
 │
 └── vibe-coding/                           # Vibe coding workflows and app templates
     ├── workflows/                         # Vibe coding app configurations (JSON)
+    ├── guides/                            # Video generation prompting PDF guides
     └── zips/                              # Zip file containing all vibe coding templates
 ```
 
@@ -121,6 +122,7 @@ We have added structured Vibe Coding application resources and templates.
 
 * **Ad Generators:** UGC image and video prompt workflows designed to drive generative video engines (like Veo3).
 * **Conversational AI:** Modular templates to prototype speech-to-speech lead qualifiers.
+* **Prompting Guides:** The Ultimate Prompting Guide for Video Generation Models PDF.
 
 To browse these workflows and explore our vibe coding blueprints, visit the [Vibe Coding Directory](vibe-coding/README.md).
 
