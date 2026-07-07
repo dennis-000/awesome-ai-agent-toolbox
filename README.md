@@ -145,4 +145,4 @@ If you have a prompt pack, a custom Claude Code skill, or an n8n workflow you wo
 
 🌟 **If you find this repository useful, give it a star!** 
 
-Connect with me on [LinkedIn](https://www.linkedin.com/in/YOUR-LINKEDIN-USERNAME) to stay updated on new additions, tutorials, and AI building tips.
+Connect with me on [LinkedIn](https://www.linkedin.com/in/dennis-asiedu/) to stay updated on new additions, tutorials, and AI building tips.
