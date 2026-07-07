@@ -1,0 +1,110 @@
+# The Agentic Builder Vault 🛠️🤖
+
+Welcome to **The Agentic Builder Vault**! This repository is a curated collection of templates, prompt packs, custom agent skills, and automation workflows designed for developers, creators, and "vibe coders" who build with AI.
+
+Whether you are writing code with Claude Code, orchestrating agents, building complex workflows in n8n, or configuring Voice AI, this repository provides copy-paste resources to supercharge your productivity.
+
+---
+
+## 📁 Repository Structure
+
+Here is how the vault is organized:
+
+```text
+/ (Root)
+│
+├── claude-code/                           # All Claude Code resources
+│   ├── prompt-guides/                     # Curated PDF Prompt packs and guides
+│   │   ├── Fable-5-Prompt-Guide.pdf       # Prompt guide for Fable 5 models
+│   │   ├── Fable5-Higgsfield-Website...  # Prompt pack for website creation
+│   │   ├── JARVIS-Prompt-Pack.pdf         # AI assistant prompt pack
+│   │   ├── Social-Autopilot-Prompt-Pack   # Social media automation prompts
+│   │   └── claude-sonnet5-vs-opus48...    # LLM comparison prompts
+│   │
+│   ├── templates/                         # Configuration and prompt templates
+│   │   └── brand-voice/
+│   │       ├── brand-voice-template.md    # Custom brand voice setup file (Markdown)
+│   │       └── Brand-Voice-Template.pdf   # Reference guide
+│   │
+│   └── custom-skills/                     # Custom Claude Code Skills / Agent packs
+│       ├── zips/                          # Zip files for quick installation
+│       │   ├── ads-skills.zip             # Marketing & ads execution skills
+│       │   ├── crypto-skills.zip          # Web3 & blockchain utilities
+│       │   ├── finance-skills.zip         # Financial analysis and reporting
+│       │   ├── realestate-skills.zip      # Real estate data & copy skills
+│       │   ├── recruiter-skills.zip       # Recruitment & candidate sourcing
+│       │   ├── scroll-cinematic.zip       # Cinematic storytelling/writing rules
+│       │   └── trading-skills.zip         # Algorithmic trading and analysis
+│       │
+│       └── extracted/                     # Extracted folders for direct browsing
+│           ├── ads/
+│           ├── crypto/
+│           ├── finance/
+│           ├── realestate/
+│           ├── recruiter/
+│           ├── scroll-cinematic/
+│           └── trading/
+│
+├── n8n/                                   # [Upcoming] n8n workflows and nodes
+│   └── README.md
+│
+├── voice-ai/                              # [Upcoming] Voice AI prompts, settings, and configs
+│   └── README.md
+│
+└── vibe-coding/                           # [Upcoming] Vibe coding workflows, guides, and tools
+    └── README.md
+```
+
+---
+
+## 🤖 Claude Code Custom Skills & Agents
+
+Claude Code allows you to define custom **Skills** and **Agents** to automate complex tasks, perform specialized research, and enforce behavioral rules.
+
+### Quick Installation
+
+1. Navigate to the `claude-code/custom-skills/zips` folder.
+2. Download the `.zip` file for the skill package you want (e.g., `ads-skills.zip`).
+3. Extract the contents directly into your Claude Code customizations directory:
+   * **Global Customizations:** `~/.gemini/config/` (macOS/Linux) or `C:\Users\<YourUsername>\.gemini\config\` (Windows)
+   * **Workspace-Specific Customizations:** `.agents/` in the root of your project directory.
+4. Restart your Claude Code session, and the new skills and subagents will be automatically discovered and loaded!
+
+### Browse the Code
+If you want to view the source code, prompts, or scripts of these skills before downloading, browse the `claude-code/custom-skills/extracted/` folder. For example:
+* [Ads Skills Directory](claude-code/custom-skills/extracted/ads/) — Contains audience research, budget planning, landing page evaluation, and ad copy skills.
+* [Trading Skills Directory](claude-code/custom-skills/extracted/trading/) — Contains market analysis, strategy evaluation, backtesting, and execution skills.
+
+---
+
+## 📝 Brand Voice Template
+
+Teach Claude how to write exactly like you do! 
+
+1. Copy the contents of the [brand-voice-template.md](claude-code/templates/brand-voice/brand-voice-template.md) template.
+2. Place it in your Claude Code workspace.
+3. Run the prompt: `"Interview me to fill in my brand voice template."`
+4. Claude will ask you a series of targeted questions, fill in the file, and adapt its style to sound like you on X/Twitter, LinkedIn, YouTube, and more.
+
+---
+
+## 🔄 Upcoming Integrations
+
+As the AI ecosystem expands, this repository will serve as a living library. Planned additions include:
+
+* **n8n Workflows:** Automation templates connecting email, CRMs, social media autopilot, and database backends.
+* **Voice AI Prompts & Configs:** Prompt templates and setup guides for voice assistants (e.g., Retell, Vapi, LiveKit).
+* **Vibe Coding Workflows:** Best practices, configs, and workflow diagrams for high-speed development using AI coding assistants.
+
+---
+
+## 🤝 Contributing & Support
+
+If you have a prompt pack, a custom Claude Code skill, or an n8n workflow you would like to share:
+1. Fork this repository.
+2. Create a new branch.
+3. Submit a pull request.
+
+🌟 **If you find this repository useful, give it a star!** 
+
+Connect with me on [LinkedIn](https://www.linkedin.com/in/YOUR-LINKEDIN-USERNAME) to stay updated on new additions, tutorials, and AI building tips.
